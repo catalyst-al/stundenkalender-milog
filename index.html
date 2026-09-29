@@ -1993,6 +1993,30 @@
 
       for(var i=0;i<touched.length;i++){ touched[i].updateAppearances(helv); }
 
+      // Die Vorlage enth\u00e4lt auf der Seite eigene Widget-Kopien der Kontrollk\u00e4stchen,
+      // die nicht am AcroForm-Feld h\u00e4ngen (z. B. "Abgabepflicht" steht dort fest auf "Ja").
+      // Diese Kopien an den gew\u00e4hlten Zustand anpassen und ebenfalls ausblenden.
+      function syncPageWidgets(name, checked){
+        var annots = page.node.Annots();
+        if(!annots) return;
+        for(var k=0;k<annots.size();k++){
+          var a = annots.lookup(k);
+          if(!(a instanceof PDFLib.PDFDict)) continue;
+          var t = a.get(PDFLib.PDFName.of("T"));
+          if(!t || typeof t.decodeText !== "function" || t.decodeText() !== name) continue;
+          var asName = PDFLib.PDFName.of("Off");
+          if(checked){
+            var ap = a.lookup(PDFLib.PDFName.of("AP"));
+            var n = ap instanceof PDFLib.PDFDict ? ap.lookup(PDFLib.PDFName.of("N")) : null;
+            var keys = n instanceof PDFLib.PDFDict ? n.keys() : [];
+            for(var j=0;j<keys.length;j++){ if(keys[j].decodeText() !== "Off"){ asName = keys[j]; break; } }
+          }
+          a.set(PDFLib.PDFName.of("V"), asName);
+          a.set(PDFLib.PDFName.of("AS"), asName);
+          a.set(PDFLib.PDFName.of("F"), PDFLib.PDFNumber.of(2));
+        }
+      }
+
       var cbMap = [
         ["Geringf\u00fcgige Besch\u00e4ftigung", data.checkboxes.minijob],
         ["Kurzfristige Besch\u00e4ftigung", data.checkboxes.kurzfristig],
@@ -2005,6 +2029,7 @@
           var w = cb.acroField.getWidgets()[0];
           var r = w.getRectangle();
           w.dict.set(PDFLib.PDFName.of("F"), PDFLib.PDFNumber.of(2));
+          syncPageWidgets(cbMap[c][0], cbMap[c][1]);
           var pad = 1.0;
           var bx = r.x + pad, by = r.y + pad;
           var bsize = Math.min(r.width, r.height) - pad*2;
