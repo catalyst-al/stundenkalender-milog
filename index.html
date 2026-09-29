@@ -228,6 +228,99 @@
   .dl-actions .btn:disabled{opacity:.45; cursor:default;}
   .cal-hint code{font-size:.72rem; background:#eef2f5; border-radius:4px; padding:0 4px;}
 
+  /* ---------- Vertragsdaten (einklappbar) ---------- */
+  .contract-card > summary{list-style:none; cursor:pointer; display:flex; align-items:baseline; gap:4px 10px; flex-wrap:wrap; padding-right:22px; position:relative;}
+  .contract-card > summary::-webkit-details-marker{display:none;}
+  .contract-card > summary h2{margin:0;}
+  .contract-card > summary::after{content:"▾"; position:absolute; right:0; top:0; color:var(--muted); font-size:1rem; transition:transform .15s;}
+  .contract-card[open] > summary::after{transform:rotate(180deg);}
+  .contract-card[open] > summary{margin-bottom:12px;}
+  .contract-sum{font-size:.78rem; color:var(--muted); font-weight:400;}
+
+  /* ---------- Wochenansicht ---------- */
+  .week-view[hidden]{display:none;}
+  .wk-head{display:grid; grid-template-columns:44px minmax(0,1fr) 44px auto; align-items:center; gap:8px; margin-top:4px;}
+  .wk-nav{width:44px; height:44px; border-radius:12px; border:1px solid var(--border); background:#fff; color:var(--navy); font-size:1.6rem; line-height:1; cursor:pointer; font-family:inherit;}
+  .wk-nav:hover{border-color:var(--teal);}
+  .wk-title{text-align:center; line-height:1.15;}
+  .wk-kw{font-size:.95rem; color:var(--navy); font-weight:600;}
+  .wk-kw b{font-size:1.5rem; font-weight:800; margin-left:2px;}
+  .wk-range{font-size:.78rem; color:var(--muted); white-space:nowrap;}
+  .wk-total{background:var(--teal-light); border:1px solid var(--teal); border-radius:10px; padding:5px 10px; text-align:center; min-width:66px;}
+  .wk-total span{display:block; font-size:.6rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.03em;}
+  .wk-total b{font-size:1.05rem; color:var(--navy); white-space:nowrap;}
+  .wk-total.warn{background:#fff6e5; border-color:#f1cf8a;}
+  .wk-list{margin-top:8px;}
+  .wk-list.anim-next{animation:wkInNext .2s ease-out;}
+  .wk-list.anim-prev{animation:wkInPrev .2s ease-out;}
+  @keyframes wkInNext{from{opacity:.2; transform:translateX(28px);} to{opacity:1; transform:none;}}
+  @keyframes wkInPrev{from{opacity:.2; transform:translateX(-28px);} to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion:reduce){ .wk-list.anim-next, .wk-list.anim-prev{animation:none;} }
+  .wk-day{display:grid; grid-template-columns:50px minmax(0,1fr); gap:10px; padding:10px 4px; border-top:1px solid #edf1f4; cursor:pointer; align-items:start; border-radius:10px; -webkit-tap-highlight-color:transparent;}
+  .wk-day:first-child{border-top:0;}
+  .wk-day:hover{background:#f7fafb;}
+  .wk-day.sel{background:#eef6f6;}
+  .wk-day:focus-visible{outline:3px solid rgba(15,138,138,.35); outline-offset:1px;}
+  .wk-date{display:flex; flex-direction:column; align-items:center; gap:2px;}
+  .wk-dnum{font-size:1.3rem; font-weight:800; line-height:1; width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%;}
+  .wk-day.today .wk-dnum{background:var(--navy); color:#fff;}
+  .wk-wd{font-size:.78rem; color:var(--muted); font-weight:600;}
+  .wk-day.weekend .wk-wd{color:#c2456b;}
+  .wk-mon{font-size:.6rem; font-weight:800; color:var(--teal); text-transform:uppercase; letter-spacing:.03em;}
+  .wk-day.other .wk-dnum{color:var(--muted);}
+  .wk-day.other.today .wk-dnum{color:#fff;}
+  .wk-body{display:flex; flex-direction:column; gap:6px; min-width:0;}
+  .wk-free{display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:50px; padding:0 14px; border:1.5px dashed var(--border); border-radius:12px; color:var(--muted); font-size:.9rem;}
+  .wk-add{font-weight:700; color:var(--teal); white-space:nowrap;}
+  .wk-card{background:var(--pbg,var(--teal-light)); border:1px solid var(--pc,var(--teal)); border-left-width:5px; border-radius:12px; padding:7px 12px 8px;}
+  .wk-card-top{display:flex; align-items:center; gap:6px; font-size:.8rem; font-weight:700; color:var(--pc,var(--teal)); min-width:0;}
+  .wk-card-top > span:first-child{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .wk-badge{flex:none; font-size:.64rem; font-weight:800; background:#fff; border:1px solid var(--pc,var(--teal)); color:var(--pc,var(--teal)); border-radius:999px; padding:1px 7px;}
+  .wk-h{margin-left:auto; flex:none; font-size:.95rem; font-weight:800; color:var(--text);}
+  .wk-time{font-size:1.2rem; font-weight:800; color:var(--text); margin-top:1px; white-space:nowrap;}
+  .wk-time sup{font-size:.6rem; color:var(--muted); font-weight:700; margin-left:3px;}
+  .wk-pause{font-size:.76rem; color:var(--muted);}
+  .wk-sum{display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 10px; font-size:.78rem; font-weight:700; color:var(--navy2); padding:0 4px;}
+  .wk-warn{color:#7a4b00; font-weight:600;}
+  .wk-tools{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid var(--border);}
+  .wk-tools .btn:disabled{opacity:.45; cursor:default;}
+  .wk-tools .stamp-status{margin-left:auto;}
+
+  dialog.wk-sheet{
+    width:100%; max-width:560px; margin:auto auto 0; max-height:92vh; overflow:auto;
+    border:0; border-radius:20px 20px 0 0; padding:0; background:#fff; color:var(--text);
+    box-shadow:0 -12px 40px rgba(8,27,45,.3);
+  }
+  dialog.wk-sheet::backdrop{background:rgba(15,41,66,.45);}
+  .ws-head{position:sticky; top:0; z-index:2; display:grid; grid-template-columns:40px minmax(0,1fr) 40px 40px; gap:6px; align-items:center; padding:12px; background:linear-gradient(135deg,var(--navy),var(--navy2)); color:#fff;}
+  .ws-title{font-weight:700; font-size:1rem; line-height:1.2; text-align:center;}
+  .ws-title small{display:block; font-weight:600; font-size:.78rem; opacity:.85;}
+  .ws-ico{width:40px; height:40px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.1); color:#fff; font-size:1.35rem; line-height:1; cursor:pointer; font-family:inherit;}
+  .ws-ico:hover{background:rgba(255,255,255,.2);}
+  .ws-body{padding:6px 14px 0;}
+  .ws-label{font-size:.7rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.03em; margin:12px 0 6px;}
+  .ws-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px;}
+  .ws-grid.ws-grid3{grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px;}
+  .ws-chip{display:flex; align-items:center; gap:8px; min-height:52px; padding:7px 10px; border:2px solid transparent; border-radius:12px; background:var(--pbg); color:var(--text); cursor:pointer; font:inherit; text-align:left; min-width:0;}
+  .ws-chip:hover{border-color:var(--pc);}
+  .ws-chip.on{border-color:var(--pc); box-shadow:0 0 0 3px rgba(15,41,66,.08);}
+  .ws-chip .ico{font-size:1.25rem; flex:none;}
+  .ws-chip b{display:block; font-size:.84rem; color:var(--pc); line-height:1.2;}
+  .ws-chip small{display:block; font-size:.74rem; color:var(--muted); white-space:nowrap;}
+  .ws-grid3 .ws-chip{min-height:48px; padding:6px 7px; gap:5px;}
+  .ws-grid3 .ws-chip .ico{font-size:1rem;}
+  .ws-grid3 .ws-chip b{font-size:.76rem;}
+  .ws-grid3 .ws-chip small{font-size:.68rem;}
+  .ws-actions{display:flex; flex-wrap:wrap; gap:8px; margin:14px -14px 0; align-items:center; position:sticky; bottom:0; z-index:2; background:#fff; padding:10px 14px calc(10px + env(safe-area-inset-bottom)); border-top:1px solid var(--border);}
+  .ws-actions .btn:disabled{opacity:.45; cursor:default;}
+  .ws-next{margin-left:auto; padding:11px 16px; font-size:.9rem;}
+  @media (min-width:621px){ dialog.wk-sheet{margin:auto; border-radius:16px;} }
+  @media (max-width:620px){
+    .wk-head{gap:6px;}
+    .wk-day{grid-template-columns:44px minmax(0,1fr); gap:8px; padding:9px 2px;}
+    .ws-actions .ws-next{width:100%; margin-left:0;}
+  }
+
   table.milog-table{width:100%; border-collapse:collapse; font-size:.82rem;}
   table.milog-table th, table.milog-table td{border:1px solid #333; padding:4px 6px; text-align:center;}
   table.milog-table th{background:#eef1f3; font-weight:700;}
@@ -317,8 +410,8 @@
       </div>
     </div>
 
-    <div class="card">
-      <h2>Vertragsdaten <span class="small-muted" style="text-transform:none; font-weight:400;">(erscheinen automatisch im Formular)</span></h2>
+    <details class="card contract-card" id="contractCard" open>
+      <summary><h2>Vertragsdaten</h2><span class="contract-sum" id="contractSum">(erscheinen automatisch im Formular)</span></summary>
       <div class="row">
         <div class="field"><label>Mandanten-Nr.</label><input type="text" id="calMandanten" placeholder="z. B. 12345"></div>
         <div class="field grow"><label>Arbeitgebername</label><input type="text" id="calEmployer" placeholder="z. B. Noctua"></div>
@@ -327,12 +420,13 @@
         <div class="field"><label>Pers.Nr.</label><input type="text" id="calPersNr" placeholder="z. B. 001"></div>
         <div class="field grow"><label>Arbeitnehmername (Vor- und Nachname)</label><input type="text" id="calEmployee" placeholder="z. B. Vorname Nachname"></div>
       </div>
-    </div>
+    </details>
 
     <div class="card">
       <div class="cal-head">
         <h2 id="calTitle">Kalender</h2>
         <div class="mode-switch" role="group" aria-label="Eingabemodus">
+          <button type="button" data-mode="week">🗓️ Woche</button>
           <button type="button" data-mode="stamp">⚡ Schnell</button>
           <button type="button" data-mode="detail">✏️ Detail</button>
         </div>
@@ -341,6 +435,25 @@
       <div class="calendar-grid" id="wdLabels"></div>
       <div class="calendar-grid" id="calendarGrid"></div>
       <div class="day-list" id="dayList" hidden></div>
+
+      <div class="week-view" id="weekView" hidden>
+        <div class="wk-head">
+          <button class="wk-nav" type="button" id="wkPrev" aria-label="Vorige Woche">‹</button>
+          <div class="wk-title">
+            <div class="wk-kw">KW<b id="wkNum"></b></div>
+            <div class="wk-range" id="wkRange"></div>
+          </div>
+          <button class="wk-nav" type="button" id="wkNext" aria-label="Nächste Woche">›</button>
+          <div class="wk-total"><span>Woche</span><b id="wkTotal">0 h</b></div>
+        </div>
+        <div class="wk-list" id="wkList"></div>
+        <div class="wk-tools">
+          <button class="btn btn-ghost btn-sm" type="button" id="wkToday">Heute</button>
+          <button class="btn btn-ghost btn-sm" type="button" id="wkCopy">⧉ Woche in nächste kopieren</button>
+          <button class="btn btn-ghost btn-sm js-undo" type="button" id="wkUndo" disabled>↶ Rückgängig</button>
+          <span class="stamp-status" id="wkStatus" aria-live="polite"></span>
+        </div>
+      </div>
 
       <div class="stamp-bar" id="stampBar">
         <div class="stamp-bar-title">Schicht wählen, dann Tage antippen</div>
@@ -353,6 +466,8 @@
         </div>
       </div>
     </div>
+
+    <dialog class="wk-sheet" id="wkSheet" aria-labelledby="wkSheetTitle"><div id="wkSheetBody"></div></dialog>
 
     <dialog class="day-dialog day-panel" id="dayPanel" aria-labelledby="dayPanelTitle">
       <div class="day-dialog-head">
@@ -749,14 +864,18 @@
     return k === "urlaub" ? "Urlaub" : "Frei";
   }
 
-  var uiPrefs = { mode:"stamp", brush:"night", second:false };
+  // Auf dem Handy startet die Wochenansicht. Ältere gespeicherte Einstellungen (ohne v:2)
+  // kannten sie noch nicht – dort einmalig auf "week" wechseln, danach gilt die eigene Wahl.
+  var isPhone = !!(window.matchMedia && window.matchMedia("(max-width: 620px)").matches);
+  var modes = ["week", "stamp", "detail"];
+  var uiPrefs = { mode: isPhone ? "week" : "stamp", brush:"night", second:false };
   try{
     var rawUi = JSON.parse(localStorage.getItem(UI_KEY) || "null");
-    if(rawUi && (rawUi.mode === "stamp" || rawUi.mode === "detail")) uiPrefs.mode = rawUi.mode;
+    if(rawUi && modes.indexOf(rawUi.mode) !== -1 && (rawUi.v === 2 || !isPhone)) uiPrefs.mode = rawUi.mode;
     if(rawUi && brushOrder.indexOf(rawUi.brush) !== -1) uiPrefs.brush = rawUi.brush;
   }catch(e){}
   function saveUiPrefs(){
-    try{ localStorage.setItem(UI_KEY, JSON.stringify({mode:uiPrefs.mode, brush:uiPrefs.brush})); }catch(e){}
+    try{ localStorage.setItem(UI_KEY, JSON.stringify({v:2, mode:uiPrefs.mode, brush:uiPrefs.brush})); }catch(e){}
   }
 
   // ---------- calendar rendering ----------
@@ -868,6 +987,7 @@
 
     updateMonthTotal();
     if(uiPrefs.mode === "detail") renderDayList();
+    else if(uiPrefs.mode === "week") renderWeek();
   }
 
   // ---------- Schnellmodus: Leiste, Modus, Rückgängig ----------
@@ -917,10 +1037,12 @@
   }
   btnSecond.addEventListener("click", function(){ setSecond(!uiPrefs.second); });
 
+  var wkStatusEl = document.getElementById("wkStatus");
   function showStampStatus(msg){
     stampStatusEl.textContent = msg;
+    wkStatusEl.textContent = msg;
     if(stampStatusTimer) clearTimeout(stampStatusTimer);
-    stampStatusTimer = setTimeout(function(){ stampStatusEl.textContent = ""; }, 2600);
+    stampStatusTimer = setTimeout(function(){ stampStatusEl.textContent = ""; wkStatusEl.textContent = ""; }, 2600);
   }
 
   function setMode(mode){
@@ -930,15 +1052,19 @@
       b.classList.toggle("active", b.dataset.mode === mode);
       b.setAttribute("aria-pressed", b.dataset.mode === mode ? "true" : "false");
     });
-    var stamp = mode === "stamp";
+    var stamp = mode === "stamp", week = mode === "week";
     calendarGrid.classList.toggle("stamp-mode", stamp);
     stampBar.style.display = stamp ? "" : "none";
     calendarGrid.hidden = !stamp;
     document.getElementById("wdLabels").hidden = !stamp;
-    dayList.hidden = stamp;
-    document.getElementById("calTitle").textContent = stamp ? "Kalender — Schnell ausfüllen" : "Kalender — Tagesliste";
+    dayList.hidden = mode !== "detail";
+    weekView.hidden = !week;
+    document.getElementById("calTitle").textContent = week ? "Kalender — Woche" : (stamp ? "Kalender — Schnell ausfüllen" : "Kalender — Tagesliste");
     var hint = document.getElementById("calHint");
-    if(stamp){
+    if(week){
+      hint.innerHTML = 'Tag <strong>antippen</strong> → Schicht wählen. Zwei Schichten an einem Tag: im Tag <strong>➕ 2. Schicht</strong>. ' +
+        'Woche wechseln mit <strong>‹ ›</strong> oder <strong>wischen</strong>.';
+    } else if(stamp){
       hint.innerHTML = 'Unten eine Schicht wählen und Tage <strong>antippen</strong> – oder mit Finger/Maus <strong>über mehrere Tage ziehen</strong>. ' +
         'Nochmals tippen = löschen. Für zwei Schichten an einem Tag <strong>➕ 2. Schicht</strong> einschalten. <strong>Lange drücken</strong> oder Rechtsklick = Details (eigene Zeiten).' +
         '<span class="kbd-hint"> Tastatur: <kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd> Tag wählen, <kbd>1</kbd>–<kbd>5</kbd> Schicht, <kbd>U</kbd> Urlaub, <kbd>0</kbd> löschen, <kbd>+</kbd> 2. Schicht, <kbd>Strg</kbd>+<kbd>Z</kbd> rückgängig.</span>';
@@ -956,9 +1082,19 @@
   function setUndoState(){
     document.querySelectorAll(".js-undo").forEach(function(b){ b.disabled = undoStack.length === 0; });
   }
-  function pushUndo(){
-    var key = monthKey(currentYear, currentMonth);
-    undoStack.push({ key:key, json: JSON.stringify(getMonthData().days) });
+  function monthSnap(key){
+    if(!state.months[key]) state.months[key] = { days:{} };
+    return { key:key, json: JSON.stringify(state.months[key].days) };
+  }
+  // Ohne Schlüssel: aktueller Monat. Die Wochenansicht übergibt den Monat des Tages,
+  // bzw. mehrere Monate, wenn eine Woche über den Monatswechsel geht.
+  function pushUndo(key){
+    undoStack.push(monthSnap(key || monthKey(currentYear, currentMonth)));
+    if(undoStack.length > 50) undoStack.shift();
+    setUndoState();
+  }
+  function pushUndoMulti(keys){
+    undoStack.push({ multi: keys.map(monthSnap) });
     if(undoStack.length > 50) undoStack.shift();
     setUndoState();
   }
@@ -966,8 +1102,10 @@
     var snap = undoStack.pop();
     setUndoState();
     if(!snap) return;
-    if(!state.months[snap.key]) state.months[snap.key] = { days:{} };
-    state.months[snap.key].days = JSON.parse(snap.json);
+    (snap.multi || [snap]).forEach(function(s){
+      if(!state.months[s.key]) state.months[s.key] = { days:{} };
+      state.months[s.key].days = JSON.parse(s.json);
+    });
     saveState();
     renderCalendar();
     showStampStatus("Rückgängig gemacht");
@@ -1347,8 +1485,9 @@
     var md = state.months[monthKey(y, m)];
     return md && md.days ? md.days[day] : null;
   }
-  function dayWarnings(day){
-    var d = peekDay(currentYear, currentMonth, day);
+  function dayWarnings(day){ return dayWarningsAt(currentYear, currentMonth, day); }
+  function dayWarningsAt(y, m, day){
+    var d = peekDay(y, m, day);
     var out = [];
     if(!dayHasData(d)) return out;
     var net = dayNetMinutes(d);
@@ -1362,7 +1501,7 @@
       var b = toMinutes(d.s2start); if(b < a) b += 1440;
       if(b < ae) out.push("Schicht 1 und 2 überschneiden sich");
     }
-    var prev = peekDay(currentYear, currentMonth, day - 1);
+    var prev = peekDay(y, m, day - 1);
     if(dayHasData(prev)){
       var ps = prev.s2start && prev.s2end ? prev.s2start : prev.s1start;
       var pe = prev.s2start && prev.s2end ? prev.s2end : prev.s1end;
@@ -1503,24 +1642,27 @@
     renderCalendar();
   }
 
+  // Ergebnis von parseQuick in einen Tageseintrag umwandeln (null = Tag leeren)
+  function dayFromQuick(r, old){
+    if(r.clear) return null;
+    if(r.urlaub) return { urlaub:true, entlohnung: old.entlohnung || "" };
+    if(r.preset) return singleShift(r.preset, old);
+    var a = r.shifts[0], b = r.shifts[1];
+    var nd = { s1start:a.start, s1end:a.end, b1start:a.bstart, b1end:a.bend,
+      s2start:"", s2end:"", b2start:"", b2end:"", entlohnung: old.entlohnung || "" };
+    if(b){ nd.s2start = b.start; nd.s2end = b.end; nd.b2start = b.bstart; nd.b2end = b.bend; }
+    orderShifts(nd);
+    detectPresets(nd);
+    return nd;
+  }
   function applyQuick(day, text){
     var r = parseQuick(text);
     if(r.error){ listError = r.error; renderDayList(); var i = dayList.querySelector(".dl-input"); if(i){ i.value = text; i.focus(); } return false; }
     var md = getMonthData();
     var old = md.days[day] || {};
     pushUndo();
-    if(r.clear) delete md.days[day];
-    else if(r.urlaub) md.days[day] = { urlaub:true, entlohnung: old.entlohnung || "" };
-    else if(r.preset) md.days[day] = singleShift(r.preset, old);
-    else {
-      var a = r.shifts[0], b = r.shifts[1];
-      var nd = { s1start:a.start, s1end:a.end, b1start:a.bstart, b1end:a.bend,
-        s2start:"", s2end:"", b2start:"", b2end:"", entlohnung: old.entlohnung || "" };
-      if(b){ nd.s2start = b.start; nd.s2end = b.end; nd.b2start = b.bstart; nd.b2end = b.bend; }
-      orderShifts(nd);
-      detectPresets(nd);
-      md.days[day] = nd;
-    }
+    var nd = dayFromQuick(r, old);
+    if(nd) md.days[day] = nd; else delete md.days[day];
     listError = "";
     afterListChange();
     return true;
@@ -1528,10 +1670,15 @@
 
   function adjustShift(day, idx, what, delta){
     var d = getMonthData().days[day];
-    if(!dayHasData(d)) return;
+    if(!dayHasData(d) || !shiftWin(d, idx)) return;
+    pushUndo();
+    adjustDayObj(d, idx, what, delta);
+    afterListChange();
+  }
+  // Beginn/Ende/Pause einer Schicht direkt im Tageseintrag verschieben
+  function adjustDayObj(d, idx, what, delta){
     var w = shiftWin(d, idx);
     if(!w) return;
-    pushUndo();
     if(what === "s") w.s = clampNum(w.s + delta, w.e - 1440 + 15, w.e - 15);
     else if(what === "e") w.e = clampNum(w.e + delta, w.s + 15, w.s + 1440 - 15);
     else if(what === "p"){
@@ -1541,7 +1688,6 @@
     fitPause(w);
     writeShift(d, idx, w);
     detectPresets(d);
-    afterListChange();
   }
 
   if(dayList){
@@ -1835,6 +1981,338 @@
     renderCalendar(); openDayPanel(selectedDay);
   });
 
+  // ---------- Wochenansicht ----------
+  // Schreibt dieselbe Struktur in state.months[..].days wie Schnell- und Detailmodus,
+  // damit Formular und PDF unverändert bleiben. Eine Woche kann in zwei Monaten liegen:
+  // jeder Tag landet in seinem eigenen Monat.
+  var weekView = document.getElementById("weekView");
+  var wkList = document.getElementById("wkList");
+  var wkSheet = document.getElementById("wkSheet");
+  var wkSheetBody = document.getElementById("wkSheetBody");
+  var weekStart = mondayOf(new Date());
+  var wkSel = null;   // im Blatt geöffneter Tag
+  var wkError = "";
+  var wkSuppressClickUntil = 0;
+
+  function mondayOf(date){ return new Date(date.getFullYear(), date.getMonth(), date.getDate() - (date.getDay() + 6) % 7); }
+  function addDays(date, n){ return new Date(date.getFullYear(), date.getMonth(), date.getDate() + n); }
+  function sameDate(a, b){ return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+  function isoWeek(date){
+    var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    var wd = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - wd);
+    return Math.ceil(((d - Date.UTC(d.getUTCFullYear(), 0, 1)) / 86400000 + 1) / 7);
+  }
+  function ddmm(date){ return String(date.getDate()).padStart(2,"0") + "." + String(date.getMonth()+1).padStart(2,"0") + "."; }
+  function dateKey(date){ return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate(); }
+  function parseDateKey(s){ var p = s.split("-"); return new Date(+p[0], +p[1], +p[2]); }
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
+  function daysOf(date, create){
+    var k = monthKey(date.getFullYear(), date.getMonth());
+    if(!state.months[k]){ if(!create) return {}; state.months[k] = { days:{} }; }
+    return state.months[k].days;
+  }
+  function entryAt(date){ return daysOf(date, false)[date.getDate()] || null; }
+  function hasEntry(d){ return dayHasData(d) || !!(d && d.urlaub); }
+  function weekTouchesMonth(start, y, m){
+    for(var i=0;i<7;i++){ var d = addDays(start, i); if(d.getFullYear() === y && d.getMonth() === m) return true; }
+    return false;
+  }
+  function setCurrentMonth(y, m){
+    currentYear = y; currentMonth = m; selectedDay = null;
+    if(!selYear.querySelector('option[value="' + y + '"]')){
+      var o = document.createElement("option"); o.value = y; o.textContent = y; selYear.appendChild(o);
+    }
+    selMonth.value = m; selYear.value = y;
+  }
+  // Monat oben gewechselt → Woche in diesen Monat legen (heute, sonst der 1.)
+  function ensureWeekInMonth(){
+    if(weekTouchesMonth(weekStart, currentYear, currentMonth)) return;
+    var t = new Date();
+    weekStart = mondayOf((t.getFullYear() === currentYear && t.getMonth() === currentMonth) ? t : new Date(currentYear, currentMonth, 1));
+  }
+  // Woche gewechselt → Monat nur umstellen, wenn die Woche keinen Tag des aktuellen Monats mehr hat
+  function gotoWeek(date){
+    weekStart = mondayOf(date);
+    if(!weekTouchesMonth(weekStart, currentYear, currentMonth)){
+      var th = addDays(weekStart, 3);
+      setCurrentMonth(th.getFullYear(), th.getMonth());
+    }
+    renderCalendar();
+  }
+  function animWeek(dir){
+    wkList.classList.remove("anim-next", "anim-prev");
+    void wkList.offsetWidth;
+    wkList.classList.add(dir > 0 ? "anim-next" : "anim-prev");
+  }
+  function stepWeek(dir){ animWeek(dir); gotoWeek(addDays(weekStart, dir * 7)); }
+
+  function shiftLabel(k){ return presetMeta[k] ? presetMeta[k].ico + " " + presetMeta[k].name : "🕘 Eigene Zeit"; }
+  function wkCardHtml(d, idx, two){
+    var n = String(idx), k = idx === 1 ? d.preset : d.preset2;
+    var st = d["s"+n+"start"], en = d["s"+n+"end"], bs = d["b"+n+"start"], be = d["b"+n+"end"];
+    var complete = !!(st && en);
+    var net = complete ? segNetMinutes(st, en, bs, be) : 0;
+    var nextDay = complete && toMinutes(en) <= toMinutes(st);
+    return '<div class="wk-card ' + (presetMeta[k] ? "p-" + k : "p-manual") + '">' +
+      '<div class="wk-card-top"><span>' + shiftLabel(k) + '</span>' +
+        (two ? '<span class="wk-badge">' + idx + '. Schicht</span>' : '') +
+        '<span class="wk-h">' + minutesToHoursComma(net) + ' h</span></div>' +
+      '<div class="wk-time">' + (st || "?") + ' – ' + (en || "?") + (nextDay ? '<sup>+1</sup>' : '') + '</div>' +
+      '<div class="wk-pause">' + (bs && be ? '☕ Pause ' + bs + '–' + be : 'ohne Pause') + '</div></div>';
+  }
+  function wkRowHtml(date){
+    var d = entryAt(date) || {};
+    var has = dayHasData(d);
+    var y = date.getFullYear(), m = date.getMonth(), day = date.getDate(), jsWd = date.getDay();
+    var other = !(y === currentYear && m === currentMonth);
+    var two = has && !!(d.s2start || d.s2end);
+    var warns = has ? dayWarningsAt(y, m, day) : [];
+    var sel = wkSheet.open && wkSel && sameDate(wkSel, date);
+    var html = '<div class="wk-day' + (sameDate(date, new Date()) ? " today" : "") + ((jsWd === 0 || jsWd === 6) ? " weekend" : "") +
+      (other ? " other" : "") + (sel ? " sel" : "") + '" data-date="' + dateKey(date) + '" role="button" tabindex="0" aria-label="' +
+      weekdaysMonFull[(jsWd + 6) % 7] + ', ' + day + '. ' + germanMonths[m] + ' bearbeiten">';
+    html += '<div class="wk-date"><b class="wk-dnum">' + day + '</b><span class="wk-wd">' + weekdaysMon[(jsWd + 6) % 7] + '</span>' +
+      ((other || day === 1) ? '<span class="wk-mon">' + germanMonths[m].slice(0, 3) + '</span>' : '') + '</div><div class="wk-body">';
+    if(has){
+      html += wkCardHtml(d, 1, two);
+      if(two) html += wkCardHtml(d, 2, two);
+      if(two || warns.length){
+        html += '<div class="wk-sum"><span>' + (two ? 'Σ ' + minutesToHoursComma(dayNetMinutes(d)) + ' h · 2 Schichten' : '') + '</span>' +
+          (warns.length ? '<span class="wk-warn">⚠️ ' + esc(warns.join(" · ")) + '</span>' : '') + '</div>';
+      }
+    } else if(d.urlaub){
+      html += '<div class="wk-card p-urlaub"><div class="wk-card-top"><span>🏖️ Urlaub</span></div><div class="wk-pause">kein Dienst · erscheint nicht im MiLoG-PDF</div></div>';
+    } else {
+      html += '<div class="wk-free"><span>Frei</span><span class="wk-add">＋ Schicht</span></div>';
+    }
+    return html + '</div></div>';
+  }
+  function renderWeek(){
+    if(!weekView) return;
+    ensureWeekInMonth();
+    var end = addDays(weekStart, 6), total = 0, html = "";
+    for(var i=0;i<7;i++){
+      var dt = addDays(weekStart, i);
+      total += dayNetMinutes(entryAt(dt));
+      html += wkRowHtml(dt);
+    }
+    wkList.innerHTML = html;
+    document.getElementById("wkNum").textContent = " " + isoWeek(weekStart);
+    document.getElementById("wkRange").textContent = ddmm(weekStart) + " – " + ddmm(end) + end.getFullYear();
+    var tEl = document.getElementById("wkTotal");
+    tEl.textContent = minutesToHoursComma(total) + " h";
+    tEl.parentNode.classList.toggle("warn", total > 48*60);
+    tEl.parentNode.title = total > 48*60 ? "Mehr als 48 Std. in dieser Woche (Hinweis, keine Rechtsberatung)" : "";
+    setUndoState();
+    if(wkSheet.open && wkSel) renderSheet(false);
+  }
+
+  // ---------- Tagesblatt (von unten) ----------
+  function sheetChip(act, k, on){
+    var p = shiftPresets[k], meta = presetMeta[k];
+    var ico = meta ? meta.ico : (k === "urlaub" ? "🏖️" : "🧽");
+    var name = meta ? meta.name : (k === "urlaub" ? "Urlaub" : "Frei");
+    var sub = p ? p.start + "–" + p.end : (k === "urlaub" ? "kein Dienst" : "Tag leeren");
+    return '<button type="button" class="ws-chip p-' + k + (on ? " on" : "") + '" data-act="' + act + '" data-k="' + k + '"' +
+      (on ? ' aria-pressed="true"' : '') + '><span class="ico">' + ico + '</span><span><b>' + name + '</b><small>' + sub + '</small></span></button>';
+  }
+  function renderSheet(focusInput){
+    var date = wkSel, d = entryAt(date) || {}, has = dayHasData(d);
+    var y = date.getFullYear(), m = date.getMonth(), day = date.getDate();
+    var two = has && !!(d.s2start || d.s2end);
+    var next = addDays(date, 1);
+    var sub = has ? minutesToHoursComma(dayNetMinutes(d)) + " h" + (two ? " · 2 Schichten" : "") : (d.urlaub ? "Urlaub" : "frei");
+    var html = '<div class="ws-head">' +
+      '<button type="button" class="ws-ico" data-act="nav" data-d="-1" aria-label="Voriger Tag">‹</button>' +
+      '<div class="ws-title" id="wkSheetTitle">' + weekdaysMonFull[(date.getDay() + 6) % 7] + ', ' + day + '. ' + germanMonths[m] + '<small>' + sub + '</small></div>' +
+      '<button type="button" class="ws-ico" data-act="nav" data-d="1" aria-label="Nächster Tag">›</button>' +
+      '<button type="button" class="ws-ico" data-act="close" aria-label="Schließen">×</button></div><div class="ws-body">';
+    html += '<div class="ws-label">' + (two ? "Schicht 1 ändern" : "Schicht wählen") + '</div><div class="ws-grid">';
+    Object.keys(presetMeta).forEach(function(k){ html += sheetChip("set", k, has && d.preset === k); });
+    html += sheetChip("set", "urlaub", !has && !!d.urlaub) + sheetChip("set", "clear", false) + '</div>';
+    if(has){
+      html += adjHtml(d, 1);
+      if(two) html += adjHtml(d, 2);
+      else {
+        html += '<div class="ws-label">➕ 2. Schicht am selben Tag</div><div class="ws-grid ws-grid3">';
+        Object.keys(presetMeta).forEach(function(k){ html += sheetChip("set2", k, false); });
+        html += '</div>';
+      }
+    }
+    html += '<div class="ws-label">Eigene Zeit tippen</div><div class="dl-quick">' +
+      '<input type="text" class="dl-input ws-input" inputmode="text" autocomplete="off" spellcheck="false" enterkeyhint="next" ' +
+      'placeholder="z. B. 630-15 · 2230-7 p3 · 630-14 / 1430-2230" aria-label="Zeiten schnell eingeben">' +
+      '<button type="button" class="btn btn-primary btn-sm" data-act="apply">↵ OK</button></div>';
+    html += '<div class="dl-err" aria-live="polite">' + (wkError ? "⚠️ " + esc(wkError) : "") + '</div>';
+    var warns = has ? dayWarningsAt(y, m, day) : [];
+    if(warns.length) html += '<ul class="dl-warns">' + warns.map(function(w){ return "<li>⚠️ " + esc(w) + "</li>"; }).join("") + '</ul>';
+    html += '<div class="ws-actions">' +
+      '<button type="button" class="btn btn-ghost btn-sm" data-act="copyprev">⧉ Wie Vortag</button>' +
+      '<button type="button" class="btn btn-ghost btn-sm" data-act="details">⋯ Details</button>' +
+      '<button type="button" class="btn btn-ghost btn-sm js-undo" data-act="undo"' + (undoStack.length ? '' : ' disabled') + '>↶ Rückgängig</button>' +
+      '<button type="button" class="btn btn-primary ws-next" data-act="nav" data-d="1">Weiter: ' + weekdaysMon[(next.getDay() + 6) % 7] + ', ' + next.getDate() + '. →</button>' +
+      '</div></div>';
+    wkSheetBody.innerHTML = html;
+    if(focusInput){ var inp = wkSheetBody.querySelector(".ws-input"); if(inp) inp.focus(); }
+  }
+  function openSheet(date){
+    wkSel = date; wkError = "";
+    renderSheet(false);
+    if(typeof wkSheet.showModal === "function"){ if(!wkSheet.open) wkSheet.showModal(); }
+    else wkSheet.setAttribute("open", "");
+    renderWeek();
+  }
+  function closeSheet(){
+    if(typeof wkSheet.close === "function" && wkSheet.open) wkSheet.close();
+    else wkSheet.removeAttribute("open");
+  }
+  function moveSheet(delta, focusInput){
+    wkSel = addDays(wkSel, delta); wkError = "";
+    if(wkSel < weekStart || wkSel > addDays(weekStart, 6)){ animWeek(delta); gotoWeek(wkSel); }
+    else renderWeek();
+    renderSheet(focusInput);
+  }
+  // Änderung am geöffneten Tag: Rückgängig-Punkt, speichern, alles neu zeichnen
+  function wkMutate(fn){
+    var date = wkSel, days = daysOf(date, true), day = date.getDate();
+    pushUndo(monthKey(date.getFullYear(), date.getMonth()));
+    var before = JSON.stringify(days[day] || null);
+    fn(days, day, days[day] || {});
+    if(JSON.stringify(days[day] || null) === before){ undoStack.pop(); setUndoState(); return false; }
+    wkError = "";
+    saveState();
+    renderCalendar();
+    return true;
+  }
+  function wkApplyQuick(text){
+    var r = parseQuick(text);
+    if(r.error){
+      wkError = r.error; renderSheet(true);
+      var inp = wkSheetBody.querySelector(".ws-input"); if(inp) inp.value = text;
+      return;
+    }
+    wkMutate(function(days, day, old){ var nd = dayFromQuick(r, old); if(nd) days[day] = nd; else delete days[day]; });
+    moveSheet(1, true);
+  }
+  function openDetailsFor(date){
+    closeSheet();
+    setCurrentMonth(date.getFullYear(), date.getMonth());
+    selectedDay = date.getDate();
+    renderCalendar();
+    openDayPanel(selectedDay);
+  }
+
+  wkSheetBody.addEventListener("click", function(e){
+    var btn = e.target.closest("[data-act]");
+    if(!btn || !wkSel) return;
+    var act = btn.dataset.act, k = btn.dataset.k;
+    if(act === "close"){ closeSheet(); return; }
+    if(act === "nav"){ moveSheet(parseInt(btn.dataset.d, 10), false); return; }
+    if(act === "undo"){ undo(); return; }
+    if(act === "details"){ openDetailsFor(wkSel); return; }
+    if(act === "apply"){ wkApplyQuick(wkSheetBody.querySelector(".ws-input").value); return; }
+    if(act === "set"){
+      wkMutate(function(days, day, old){
+        if(k === "clear") delete days[day];
+        else if(k === "urlaub") days[day] = { urlaub:true, entlohnung: old.entlohnung || "" };
+        else if(dayHasData(old) && (old.s2start || old.s2end)){
+          // Zwei Schichten: nur Schicht 1 ersetzen, Schicht 2 bleibt
+          var p = shiftPresets[k];
+          old.s1start = p.start; old.s1end = p.end; old.b1start = p.bstart; old.b1end = p.bend; old.preset = k;
+          orderShifts(old);
+        } else days[day] = singleShift(k, old);
+      });
+      showStampStatus(wkSel.getDate() + ". → " + brushName(k));
+    } else if(act === "set2"){
+      wkMutate(function(days, day, old){
+        if(!dayHasData(old)) return;
+        var p = shiftPresets[k];
+        old.s2start = p.start; old.s2end = p.end; old.b2start = p.bstart; old.b2end = p.bend; old.preset2 = k;
+        delete old.urlaub;
+        orderShifts(old);
+      });
+      showStampStatus(wkSel.getDate() + ". + " + brushName(k));
+    } else if(act === "rm2"){
+      wkMutate(function(days, day, old){ old.s2start = old.s2end = old.b2start = old.b2end = ""; old.preset2 = ""; });
+    } else if(act === "adj"){
+      wkMutate(function(days, day, old){
+        if(dayHasData(old)) adjustDayObj(old, parseInt(btn.dataset.i, 10), btn.dataset.w, parseInt(btn.dataset.d, 10));
+      });
+    } else if(act === "copyprev"){
+      var src = entryAt(addDays(wkSel, -1));
+      if(!hasEntry(src)){ wkError = "Der Vortag ist leer"; renderSheet(false); return; }
+      wkMutate(function(days, day){ days[day] = JSON.parse(JSON.stringify(src)); });
+    }
+  });
+  wkSheetBody.addEventListener("keydown", function(e){
+    if(e.target.classList.contains("ws-input") && e.key === "Enter"){ e.preventDefault(); wkApplyQuick(e.target.value); }
+  });
+  wkSheet.addEventListener("click", function(e){ if(e.target === wkSheet) closeSheet(); });
+  wkSheet.addEventListener("close", function(){ renderWeek(); });
+  dayPanel.addEventListener("close", function(){ if(uiPrefs.mode === "week") renderWeek(); });
+
+  wkList.addEventListener("click", function(e){
+    if(Date.now() < wkSuppressClickUntil) return;
+    var row = e.target.closest(".wk-day");
+    if(row) openSheet(parseDateKey(row.dataset.date));
+  });
+  wkList.addEventListener("keydown", function(e){
+    var row = e.target.closest(".wk-day");
+    if(row && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); openSheet(parseDateKey(row.dataset.date)); }
+  });
+  // Wischen = Woche wechseln
+  var wkTouch = null;
+  wkList.addEventListener("touchstart", function(e){
+    wkTouch = e.touches.length === 1 ? { x:e.touches[0].clientX, y:e.touches[0].clientY, t:Date.now() } : null;
+  }, {passive:true});
+  wkList.addEventListener("touchend", function(e){
+    if(!wkTouch) return;
+    var t = e.changedTouches[0], dx = t.clientX - wkTouch.x, dy = t.clientY - wkTouch.y, dt = Date.now() - wkTouch.t;
+    wkTouch = null;
+    if(Math.abs(dx) > 60 && Math.abs(dx) > 2 * Math.abs(dy) && dt < 800){
+      wkSuppressClickUntil = Date.now() + 400;
+      stepWeek(dx < 0 ? 1 : -1);
+    }
+  }, {passive:true});
+  document.addEventListener("keydown", function(e){
+    if(uiPrefs.mode !== "week" || !views.calendar.classList.contains("active")) return;
+    if(wkSheet.open || dayPanel.open || e.ctrlKey || e.metaKey || e.altKey) return;
+    var t = e.target;
+    if(t && (t.tagName === "INPUT" || t.tagName === "SELECT" || t.tagName === "TEXTAREA")) return;
+    if(e.key === "ArrowLeft" || e.key === "ArrowRight"){ e.preventDefault(); stepWeek(e.key === "ArrowRight" ? 1 : -1); }
+  });
+
+  document.getElementById("wkPrev").addEventListener("click", function(){ stepWeek(-1); });
+  document.getElementById("wkNext").addEventListener("click", function(){ stepWeek(1); });
+  document.getElementById("wkUndo").addEventListener("click", undo);
+  document.getElementById("wkToday").addEventListener("click", function(){
+    var t = new Date();
+    if(!weekTouchesMonth(mondayOf(t), currentYear, currentMonth)) setCurrentMonth(t.getFullYear(), t.getMonth());
+    gotoWeek(t);
+  });
+  // Woche in die nächste kopieren – nur in leere Tage, belegte Tage bleiben unverändert
+  document.getElementById("wkCopy").addEventListener("click", function(){
+    var keys = {}, i, n = 0, skipped = 0;
+    for(i=0;i<7;i++){ var t = addDays(weekStart, i + 7); keys[monthKey(t.getFullYear(), t.getMonth())] = true; }
+    pushUndoMulti(Object.keys(keys));
+    for(i=0;i<7;i++){
+      var src = entryAt(addDays(weekStart, i)), dst = addDays(weekStart, i + 7);
+      if(!hasEntry(src)) continue;
+      if(hasEntry(entryAt(dst))){ skipped++; continue; }
+      daysOf(dst, true)[dst.getDate()] = JSON.parse(JSON.stringify(src));
+      n++;
+    }
+    if(!n){
+      undoStack.pop(); setUndoState();
+      showStampStatus(skipped ? "Nächste Woche ist schon ausgefüllt" : "Diese Woche ist leer");
+      return;
+    }
+    saveState();
+    stepWeek(1);
+    showStampStatus(n + " Tage in KW " + isoWeek(weekStart) + " kopiert" + (skipped ? " · " + skipped + " belegte übersprungen" : ""));
+  });
+
   // ---------- form / print view ----------
   function renderFormView(){
     document.getElementById("pf-mandanten").textContent = state.header.mandanten || "\u00A0";
@@ -2087,6 +2565,7 @@
     calHeaderFld.employer.value = state.header.employer || "";
     calHeaderFld.persNr.value = state.header.persNr || "";
     calHeaderFld.employee.value = state.header.employee || "";
+    updateContractSummary();
   }
 
   function persistHeaderFromCalendar(){
@@ -2100,6 +2579,12 @@
     document.getElementById("setEmployer").value = state.header.employer;
     document.getElementById("setPersNr").value = state.header.persNr;
     document.getElementById("setEmployee").value = state.header.employee;
+    updateContractSummary();
+  }
+  // Eingeklappt zeigt die Karte Name und Arbeitgeber, damit man sieht, dass alles eingetragen ist
+  function updateContractSummary(){
+    var parts = [state.header.employee, state.header.employer].filter(Boolean);
+    document.getElementById("contractSum").textContent = parts.length ? parts.join(" · ") : "(erscheinen automatisch im Formular)";
   }
   Object.keys(calHeaderFld).forEach(function(k){
     calHeaderFld[k].addEventListener("input", persistHeaderFromCalendar);
@@ -2119,6 +2604,7 @@
     calHeaderFld.employer.value = state.header.employer;
     calHeaderFld.persNr.value = state.header.persNr;
     calHeaderFld.employee.value = state.header.employee;
+    updateContractSummary();
     alert("Gespeichert.");
   });
 
@@ -2166,6 +2652,7 @@
   // ---------- init ----------
   loadState();
   loadHeaderToSettings();
+  document.getElementById("contractCard").open = !state.header.employee;
   setBrush(uiPrefs.brush);
   setMode(uiPrefs.mode);
 
