@@ -36,6 +36,7 @@ https://catalyst-al.github.io/stundenkalender-milog/
    - **➕ 2. Schicht** einschalten, um an einem Tag eine zweite Schicht hinzuzufügen (wird automatisch zeitlich sortiert; Überschneidungen werden gemeldet).
    - 🏖️ Urlaub markiert den Tag im Kalender, zählt keine Arbeitsstunden und erscheint nicht im MiLoG-PDF.
    - Lange drücken bzw. Rechtsklick öffnet die Details (eigene Zeiten, Entlohnungsart).
+   - **✏️ Entlohnungsart** einschalten und Tage antippen, um die Entlohnungsart frei einzutragen; sie steht dann im Kalender am Tag und im Formular/PDF in der letzten Spalte.
    - **🔁 Erste Woche wiederholen** überträgt Tag 1–7 auf alle leeren Tage des Monats; **↶ Rückgängig** macht jeden Schritt rückgängig.
    - Tastatur: Pfeiltasten wählen den Tag, `1`–`5` tragen die Schicht ein, `U` Urlaub, `0` löscht, `+` schaltet die 2. Schicht um, `Strg`+`Z` macht rückgängig.
 4. Einzelne Tage genau anpassen im Modus **✏️ Detail** (Tagesliste):

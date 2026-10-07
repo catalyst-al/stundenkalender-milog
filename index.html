@@ -142,6 +142,7 @@
   .calendar-grid.stamp-mode .day-cell:hover{transform:none;}
   .day-cell.just{animation:stampPop .22s ease-out;}
   @keyframes stampPop{0%{transform:scale(.92);}100%{transform:scale(1);}}
+  .day-ent{font-size:.62rem; font-weight:700; color:var(--navy2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;}
   .cell-action.faint{color:#b6c0c9; font-size:.9rem;}
   .stamp-bar{
     position:sticky; bottom:0; z-index:15; margin:14px -16px -16px;
@@ -465,6 +466,7 @@
         <div class="brush-row" id="brushRow"></div>
         <div class="stamp-tools">
           <button class="btn btn-ghost btn-sm btn-toggle" type="button" id="btnSecondStamp" aria-pressed="false">➕ 2. Schicht</button>
+          <button class="btn btn-ghost btn-sm btn-toggle" type="button" id="btnEntStamp" aria-pressed="false">✏️ Entlohnungsart</button>
           <button class="btn btn-ghost btn-sm js-undo" type="button" id="btnUndo" disabled>↶ Rückgängig</button>
           <button class="btn btn-ghost btn-sm" type="button" id="btnRepeatWeek">🔁 Erste Woche wiederholen</button>
           <span class="stamp-status" id="stampStatus" aria-live="polite"></span>
@@ -906,6 +908,11 @@
     wdEl.className = "day-wd"; wdEl.textContent = wd;
     cell.appendChild(numEl);
     cell.appendChild(wdEl);
+    if(d.entlohnung){
+      var entEl = document.createElement("div");
+      entEl.className = "day-ent"; entEl.textContent = "✏️ " + d.entlohnung; entEl.title = "Entlohnungsart: " + d.entlohnung;
+      cell.appendChild(entEl);
+    }
 
     if(has){
       var sumEl = document.createElement("div");
@@ -1023,7 +1030,26 @@
     brushRow.appendChild(b);
   });
 
+  // Schnell-Modus: Werkzeug "Entlohnungsart" – Tippen auf einen Tag öffnet das Feld statt zu stempeln
+  var entTool = false;
+  var btnEnt = document.getElementById("btnEntStamp");
+  function setEntTool(on){
+    entTool = !!on;
+    btnEnt.classList.toggle("active", entTool);
+    btnEnt.setAttribute("aria-pressed", entTool ? "true" : "false");
+    btnEnt.textContent = entTool ? "✏️ Entlohnungsart: AN" : "✏️ Entlohnungsart";
+  }
+  btnEnt.addEventListener("click", function(){
+    setEntTool(!entTool);
+    showStampStatus(entTool ? "Tag antippen → Entlohnungsart eintragen" : "Entlohnungsart-Werkzeug aus");
+  });
+  function openEnt(day){
+    openDetail(day);
+    var f = document.getElementById("entlohnung");
+    if(f){ f.focus(); f.select(); }
+  }
   function setBrush(k){
+    setEntTool(false);
     uiPrefs.brush = k;
     saveUiPrefs();
     brushRow.querySelectorAll("[data-brush]").forEach(function(b){
@@ -1262,6 +1288,7 @@
     if(uiPrefs.mode !== "stamp" || e.button !== 0) return;
     var cell = e.target.closest(".day-cell[data-day]");
     if(!cell) return;
+    if(entTool){ suppressClickUntil = Date.now() + 500; openEnt(parseInt(cell.dataset.day, 10)); return; }
     endStroke();
     var day = parseInt(cell.dataset.day, 10);
     stroke = { id:e.pointerId, start:day, last:day, started:false, long:false, days:{}, x:e.clientX, y:e.clientY };
@@ -1282,6 +1309,7 @@
     var day = parseInt(cell.dataset.day, 10);
     if(uiPrefs.mode === "stamp"){
       if(Date.now() < suppressClickUntil) return; // bereits über Pointer behandelt
+      if(entTool){ openEnt(day); return; }
       tapStamp(day); // Tastatur (Enter / Leertaste)
       return;
     }
