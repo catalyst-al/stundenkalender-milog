@@ -36,13 +36,14 @@ https://catalyst-al.github.io/stundenkalender-milog/
    - **➕ 2. Schicht** einschalten, um an einem Tag eine zweite Schicht hinzuzufügen (wird automatisch zeitlich sortiert; Überschneidungen werden gemeldet).
    - 🏖️ Urlaub markiert den Tag im Kalender, zählt keine Arbeitsstunden und erscheint nicht im MiLoG-PDF.
    - Lange drücken bzw. Rechtsklick öffnet die Details (eigene Zeiten, Entlohnungsart).
+   - **✏️ Entlohnungsart** einschalten und Tage antippen, um die Entlohnungsart frei einzutragen; sie steht dann im Kalender am Tag und im Formular/PDF in der letzten Spalte.
    - **🔁 Erste Woche wiederholen** überträgt Tag 1–7 auf alle leeren Tage des Monats; **↶ Rückgängig** macht jeden Schritt rückgängig.
    - Tastatur: Pfeiltasten wählen den Tag, `1`–`5` tragen die Schicht ein, `U` Urlaub, `0` löscht, `+` schaltet die 2. Schicht um, `Strg`+`Z` macht rückgängig.
 4. Einzelne Tage genau anpassen im Modus **✏️ Detail** (Tagesliste):
    - Jeder Tag ist eine Zeile mit Zeitleiste (04:00 bis 08:00 am Folgetag). Tag antippen öffnet die Bearbeitung darunter.
    - **Schnell tippen** und mit `Enter` zum nächsten Tag: `630-15` (06:30–15:00), `2230-7 p3` (Pause ab 03:00), `630-14 / 1430-2230` (zwei Schichten), `u` = Urlaub, `0` = frei. Ohne `p` wird die Pause automatisch gesetzt (30 Min. ab 6 Std., 45 Min. ab 9 Std.; bei bekannten Schichten deren Pause).
    - In der Leiste die **Enden ziehen** = Beginn/Ende, den **gestreiften Block ziehen** = Pause verschieben (15-Min.-Schritte).
-   - Knöpfe **−15 / +15 / +30** für Beginn, Ende und Pause; Schicht-Chips; **➕ 2. Schicht**; **⧉ Wie Vortag**; **⋯ Details** öffnet den bisherigen Tagesdialog (z. B. für die Entlohnungsart).
+   - Knöpfe **−15 / +15 / +30** für Beginn, Ende und Pause; Schicht-Chips; **➕ 2. Schicht**; **⧉ Wie Vortag**; **⋯ Details** öffnet den bisherigen Tagesdialog. Darunter steht das Freitextfeld **Entlohnungsart** – der eingetragene Text erscheint im Formular/PDF in der letzten Spalte.
    - ⚠️ Hinweise bei mehr als 10 Std. Arbeitszeit, zu kurzer Pause, weniger als 11 Std. Ruhezeit oder überschneidenden Schichten (nur Hinweise, keine Rechtsberatung).
 5. Unter **Formular (Druck / PDF)** auf **Offizielles PDF erzeugen** klicken.
 6. Das fertige MiLoG-PDF herunterladen und an die Buchhaltung weitergeben.

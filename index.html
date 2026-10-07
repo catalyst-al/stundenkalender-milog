@@ -142,6 +142,7 @@
   .calendar-grid.stamp-mode .day-cell:hover{transform:none;}
   .day-cell.just{animation:stampPop .22s ease-out;}
   @keyframes stampPop{0%{transform:scale(.92);}100%{transform:scale(1);}}
+  .day-ent{font-size:.62rem; font-weight:700; color:var(--navy2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;}
   .cell-action.faint{color:#b6c0c9; font-size:.9rem;}
   .stamp-bar{
     position:sticky; bottom:0; z-index:15; margin:14px -16px -16px;
@@ -225,6 +226,10 @@
   .dl-warns{margin:10px 0 0; padding:8px 10px; list-style:none; background:#fff6e5; border:1px solid #f1cf8a; border-radius:8px; font-size:.78rem; color:#7a4b00;}
   .dl-warns li+li{margin-top:3px;}
   .dl-actions{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;}
+  .dl-ent{margin-top:12px;}
+  .dl-ent label{display:block; font-size:.74rem; font-weight:700; color:var(--navy2); margin-bottom:4px;}
+  .dl-ent label small{font-weight:400; color:var(--muted);}
+  .dl-ent-input{width:100%; box-sizing:border-box; padding:9px 12px; border:1px solid var(--border); border-radius:8px; font-size:.92rem; font-family:inherit;}
   .dl-actions .btn:disabled{opacity:.45; cursor:default;}
   .cal-hint code{font-size:.72rem; background:#eef2f5; border-radius:4px; padding:0 4px;}
 
@@ -461,6 +466,7 @@
         <div class="brush-row" id="brushRow"></div>
         <div class="stamp-tools">
           <button class="btn btn-ghost btn-sm btn-toggle" type="button" id="btnSecondStamp" aria-pressed="false">➕ 2. Schicht</button>
+          <button class="btn btn-ghost btn-sm btn-toggle" type="button" id="btnEntStamp" aria-pressed="false">✏️ Entlohnungsart</button>
           <button class="btn btn-ghost btn-sm js-undo" type="button" id="btnUndo" disabled>↶ Rückgängig</button>
           <button class="btn btn-ghost btn-sm" type="button" id="btnRepeatWeek">🔁 Erste Woche wiederholen</button>
           <span class="stamp-status" id="stampStatus" aria-live="polite"></span>
@@ -902,6 +908,11 @@
     wdEl.className = "day-wd"; wdEl.textContent = wd;
     cell.appendChild(numEl);
     cell.appendChild(wdEl);
+    if(d.entlohnung){
+      var entEl = document.createElement("div");
+      entEl.className = "day-ent"; entEl.textContent = "✏️ " + d.entlohnung; entEl.title = "Entlohnungsart: " + d.entlohnung;
+      cell.appendChild(entEl);
+    }
 
     if(has){
       var sumEl = document.createElement("div");
@@ -1019,7 +1030,26 @@
     brushRow.appendChild(b);
   });
 
+  // Schnell-Modus: Werkzeug "Entlohnungsart" – Tippen auf einen Tag öffnet das Feld statt zu stempeln
+  var entTool = false;
+  var btnEnt = document.getElementById("btnEntStamp");
+  function setEntTool(on){
+    entTool = !!on;
+    btnEnt.classList.toggle("active", entTool);
+    btnEnt.setAttribute("aria-pressed", entTool ? "true" : "false");
+    btnEnt.textContent = entTool ? "✏️ Entlohnungsart: AN" : "✏️ Entlohnungsart";
+  }
+  btnEnt.addEventListener("click", function(){
+    setEntTool(!entTool);
+    showStampStatus(entTool ? "Tag antippen → Entlohnungsart eintragen" : "Entlohnungsart-Werkzeug aus");
+  });
+  function openEnt(day){
+    openDetail(day);
+    var f = document.getElementById("entlohnung");
+    if(f){ f.focus(); f.select(); }
+  }
   function setBrush(k){
+    setEntTool(false);
     uiPrefs.brush = k;
     saveUiPrefs();
     brushRow.querySelectorAll("[data-brush]").forEach(function(b){
@@ -1258,6 +1288,7 @@
     if(uiPrefs.mode !== "stamp" || e.button !== 0) return;
     var cell = e.target.closest(".day-cell[data-day]");
     if(!cell) return;
+    if(entTool){ suppressClickUntil = Date.now() + 500; openEnt(parseInt(cell.dataset.day, 10)); return; }
     endStroke();
     var day = parseInt(cell.dataset.day, 10);
     stroke = { id:e.pointerId, start:day, last:day, started:false, long:false, days:{}, x:e.clientX, y:e.clientY };
@@ -1278,6 +1309,7 @@
     var day = parseInt(cell.dataset.day, 10);
     if(uiPrefs.mode === "stamp"){
       if(Date.now() < suppressClickUntil) return; // bereits über Pointer behandelt
+      if(entTool){ openEnt(day); return; }
       tapStamp(day); // Tastatur (Enter / Leertaste)
       return;
     }
@@ -1551,6 +1583,22 @@
         '<span class="dl-grp"><em>Pause</em>' + b("p",-15,"◀ 15") + b("p",15,"15 ▶") + '</span>' +
       '</div></div>';
   }
+  // Freitextfeld: der Text erscheint im Formular in der letzten Spalte "Entlohnungsart"
+  function entHtml(d){
+    return '<div class="dl-ent"><label>Entlohnungsart <small>– erscheint im Formular in der letzten Spalte</small>' +
+      '<input type="text" class="dl-ent-input" maxlength="40" autocomplete="off" value="' + esc(d.entlohnung || "") + '" ' +
+      'placeholder="frei eintragen, z. B. Urlaub, Krank, Feiertag – sonst leer lassen"></label></div>';
+  }
+  // Entlohnungsart eines Tages setzen; ein Tag nur mit Entlohnungsart bleibt erhalten
+  function setEntlohnung(days, day, val){
+    val = String(val || "").trim();
+    var d = days[day];
+    if((d && d.entlohnung || "") === val) return false;
+    if(!d) d = days[day] = {};
+    d.entlohnung = val;
+    if(!val && !hasEntry(d)) delete days[day];
+    return true;
+  }
   function panelHtml(day){
     var d = getMonthData().days[day] || {};
     var has = dayHasData(d);
@@ -1575,11 +1623,12 @@
     if(warns.length){
       html += '<ul class="dl-warns">' + warns.map(function(w){ return "<li>⚠️ " + w + "</li>"; }).join("") + '</ul>';
     }
+    html += entHtml(d);
     html += '<div class="dl-actions">' +
       '<button type="button" class="btn btn-ghost btn-sm" data-act="nav" data-d="-1">↑ Voriger Tag</button>' +
       '<button type="button" class="btn btn-ghost btn-sm" data-act="nav" data-d="1">↓ Nächster Tag</button>' +
       '<button type="button" class="btn btn-ghost btn-sm" data-act="copyprev">⧉ Wie Vortag</button>' +
-      '<button type="button" class="btn btn-ghost btn-sm" data-act="details">⋯ Details / Entlohnungsart</button>' +
+      '<button type="button" class="btn btn-ghost btn-sm" data-act="details">⋯ Details</button>' +
       '<button type="button" class="btn btn-ghost btn-sm js-undo" data-act="undo"' + (undoStack.length ? '' : ' disabled') + '>↶ Rückgängig</button>' +
       '</div>';
     return html + '</div>';
@@ -1747,7 +1796,19 @@
       else selectDay(rd, false);
     });
 
+    // Speichern ohne Neuzeichnen, damit ein gleichzeitiger Klick auf einen Knopf nicht verloren geht
+    dayList.addEventListener("change", function(e){
+      if(!e.target.classList.contains("dl-ent-input") || !selectedDay) return;
+      pushUndo();
+      if(setEntlohnung(getMonthData().days, selectedDay, e.target.value)) saveState();
+      else { undoStack.pop(); setUndoState(); }
+    });
+
     dayList.addEventListener("keydown", function(e){
+      if(e.target.classList.contains("dl-ent-input")){
+        if(e.key === "Enter"){ e.preventDefault(); e.target.blur(); }
+        return;
+      }
       if(e.target.classList.contains("dl-input")){
         var total = daysInMonth(currentYear, currentMonth);
         if(e.key === "Enter"){
@@ -2148,6 +2209,7 @@
     html += '<div class="dl-err" aria-live="polite">' + (wkError ? "⚠️ " + esc(wkError) : "") + '</div>';
     var warns = has ? dayWarningsAt(y, m, day) : [];
     if(warns.length) html += '<ul class="dl-warns">' + warns.map(function(w){ return "<li>⚠️ " + esc(w) + "</li>"; }).join("") + '</ul>';
+    html += entHtml(d);
     html += '<div class="ws-actions">' +
       '<button type="button" class="btn btn-ghost btn-sm" data-act="copyprev">⧉ Wie Vortag</button>' +
       '<button type="button" class="btn btn-ghost btn-sm" data-act="details">⋯ Details</button>' +
@@ -2246,7 +2308,15 @@
       wkMutate(function(days, day){ days[day] = JSON.parse(JSON.stringify(src)); });
     }
   });
+  wkSheetBody.addEventListener("change", function(e){
+    if(!e.target.classList.contains("dl-ent-input") || !wkSel) return;
+    var date = wkSel;
+    pushUndo(monthKey(date.getFullYear(), date.getMonth()));
+    if(setEntlohnung(daysOf(date, true), date.getDate(), e.target.value)) saveState();
+    else { undoStack.pop(); setUndoState(); }
+  });
   wkSheetBody.addEventListener("keydown", function(e){
+    if(e.target.classList.contains("dl-ent-input") && e.key === "Enter"){ e.preventDefault(); e.target.blur(); return; }
     if(e.target.classList.contains("ws-input") && e.key === "Enter"){ e.preventDefault(); wkApplyQuick(e.target.value); }
   });
   wkSheet.addEventListener("click", function(e){ if(e.target === wkSheet) closeSheet(); });
@@ -2382,7 +2452,10 @@
     var daysOut = {};
     for(var day=1; day<=totalDays; day++){
       var d = getDay(day);
-      if(!dayHasData(d)) continue;
+      if(!dayHasData(d)){
+        if(d.entlohnung) daysOut[String(day)] = { entlohnung: d.entlohnung };
+        continue;
+      }
       var wd = weekdayAbbrev(currentYear, currentMonth, day);
       var mins = dayNetMinutes(d);
       monthMinutes += mins;
@@ -2441,14 +2514,35 @@
       var page = pdfDoc.getPages()[0];
 
       var touched = [];
+      // Standardschrift kann nur WinAnsi-Zeichen (inkl. €, ä, ë, ç); andere (z. B. Emoji) würden die PDF-Erzeugung abbrechen
+      var helvChars = {};
+      helv.getCharacterSet().forEach(function(c){ helvChars[c] = true; });
+      function pdfSafe(v){
+        var out = "";
+        for(var ch of String(v)){ if(helvChars[ch.codePointAt(0)]) out += ch; }
+        return out.replace(/\s+/g, " ").trim();
+      }
       function setT(name, val, size){
-        if(val === undefined || val === null || val === "") return;
+        if(val === undefined || val === null) return;
+        val = pdfSafe(val);
+        if(val === "") return;
         try{
           var f = form.getTextField(name);
-          f.setText(String(val));
+          f.setText(val);
           if(size) f.setFontSize(size);
           touched.push(f);
         }catch(e){ /* field absent - skip */ }
+      }
+
+      // Schriftgröße so wählen, dass langer Text in die Feldbreite passt
+      function fitSize(name, val, max){
+        if(!val) return max;
+        val = pdfSafe(val);
+        try{
+          var w = form.getTextField(name).acroField.getWidgets()[0].getRectangle().width - 4;
+          var tw = helv.widthOfTextAtSize(String(val), max);
+          return tw > w ? Math.max(5, Math.floor(max * w / tw * 10) / 10) : max;
+        }catch(e){ return max; }
       }
 
       setT("Mandanten-Nr", data.mandanten_nr);
@@ -2460,13 +2554,15 @@
       for(var n=1;n<=31;n++){
         var d = data.days[String(n)];
         if(!d) continue;
-        var small = d.has_second_shift ? 6.5 : undefined;
+        // Zeilenfelder sind nur ~11 pt hoch: mit 12 pt (Vorlage) würden Unterlängen abgeschnitten
+        var row = 9;
+        var small = d.has_second_shift ? 6.5 : row;
         setT("Arbeitsbeginn"+n, d.beginn, small);
-        setT("Arbeitsende"+n, d.ende);
+        setT("Arbeitsende"+n, d.ende, row);
         setT("Pause von_"+n, d.pause_von, small);
         setT("Pause bis_"+n, d.pause_bis, small);
-        setT("Arbeitszeit"+n, d.zeit);
-        setT("Entlohnungsart"+n, d.entlohnung);
+        setT("Arbeitszeit"+n, d.zeit, row);
+        setT("Entlohnungsart"+n, d.entlohnung, fitSize("Entlohnungsart"+n, d.entlohnung, row));
       }
       setT("Summe Arbeitszeit", data.summe);
 
