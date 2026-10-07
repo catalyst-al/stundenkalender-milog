@@ -2524,6 +2524,16 @@
         }catch(e){ /* field absent - skip */ }
       }
 
+      // Schriftgröße so wählen, dass langer Text in die Feldbreite passt
+      function fitSize(name, val, max){
+        if(!val) return max;
+        try{
+          var w = form.getTextField(name).acroField.getWidgets()[0].getRectangle().width - 4;
+          var tw = helv.widthOfTextAtSize(String(val), max);
+          return tw > w ? Math.max(5, Math.floor(max * w / tw * 10) / 10) : max;
+        }catch(e){ return max; }
+      }
+
       setT("Mandanten-Nr", data.mandanten_nr);
       setT("Arbeitgebername", data.employer);
       setT("Personal-Nr", data.personal_nr);
@@ -2533,13 +2543,15 @@
       for(var n=1;n<=31;n++){
         var d = data.days[String(n)];
         if(!d) continue;
-        var small = d.has_second_shift ? 6.5 : undefined;
+        // Zeilenfelder sind nur ~11 pt hoch: mit 12 pt (Vorlage) würden Unterlängen abgeschnitten
+        var row = 9;
+        var small = d.has_second_shift ? 6.5 : row;
         setT("Arbeitsbeginn"+n, d.beginn, small);
-        setT("Arbeitsende"+n, d.ende);
+        setT("Arbeitsende"+n, d.ende, row);
         setT("Pause von_"+n, d.pause_von, small);
         setT("Pause bis_"+n, d.pause_bis, small);
-        setT("Arbeitszeit"+n, d.zeit);
-        setT("Entlohnungsart"+n, d.entlohnung);
+        setT("Arbeitszeit"+n, d.zeit, row);
+        setT("Entlohnungsart"+n, d.entlohnung, fitSize("Entlohnungsart"+n, d.entlohnung, row));
       }
       setT("Summe Arbeitszeit", data.summe);
 
