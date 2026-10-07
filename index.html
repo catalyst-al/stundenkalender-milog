@@ -2514,11 +2514,21 @@
       var page = pdfDoc.getPages()[0];
 
       var touched = [];
+      // Standardschrift kann nur WinAnsi-Zeichen (inkl. €, ä, ë, ç); andere (z. B. Emoji) würden die PDF-Erzeugung abbrechen
+      var helvChars = {};
+      helv.getCharacterSet().forEach(function(c){ helvChars[c] = true; });
+      function pdfSafe(v){
+        var out = "";
+        for(var ch of String(v)){ if(helvChars[ch.codePointAt(0)]) out += ch; }
+        return out.replace(/\s+/g, " ").trim();
+      }
       function setT(name, val, size){
-        if(val === undefined || val === null || val === "") return;
+        if(val === undefined || val === null) return;
+        val = pdfSafe(val);
+        if(val === "") return;
         try{
           var f = form.getTextField(name);
-          f.setText(String(val));
+          f.setText(val);
           if(size) f.setFontSize(size);
           touched.push(f);
         }catch(e){ /* field absent - skip */ }
@@ -2527,6 +2537,7 @@
       // Schriftgröße so wählen, dass langer Text in die Feldbreite passt
       function fitSize(name, val, max){
         if(!val) return max;
+        val = pdfSafe(val);
         try{
           var w = form.getTextField(name).acroField.getWidgets()[0].getRectangle().width - 4;
           var tw = helv.widthOfTextAtSize(String(val), max);
